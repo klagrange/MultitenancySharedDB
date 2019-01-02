@@ -75,7 +75,7 @@ for id in range(1, 4):
 ###########################
 # PERMISSION
 ###########################
-for id in range(1, 11):
+for id in range(1, 100):
     permission = {}
     permission["id"] = id
     permission["code"] = fake.bban()
@@ -111,26 +111,26 @@ users_json = json.dumps(users, indent=4)
 roles_json = json.dumps(roles, indent=4)
 role_permission_json = json.dumps(role_permission_s, indent=4)
 
-with open('data/organizations.js', 'w') as f:
-    f.write("module.exports = {0}".format(organizations_json))
+# with open('data/organizations.js', 'w') as f:
+    # f.write("module.exports = {0}".format(organizations_json))
     # print("module.exports = {0}".format(organizations_json))
 
-with open('data/users.js', 'w') as f:
-    f.write("module.exports = {0}".format(users_json))
-    # print("module.exports = {0}".format(users_json))
-
-with open('data/goals.js', 'w') as f:
-    f.write("module.exports = {0}".format(goals_json))
-    # print("module.exports = {0}".format(goals_json))
-
-with open('data/roles.js', 'w') as f:
-    f.write("module.exports = {0}".format(roles_json))
-    # print("module.exports = {0}".format(roles_json))
-
+# with open('data/users.js', 'w') as f:
+#     f.write("module.exports = {0}".format(users_json))
+#     # print("module.exports = {0}".format(users_json))
+#
+# with open('data/goals.js', 'w') as f:
+#     f.write("module.exports = {0}".format(goals_json))
+#     # print("module.exports = {0}".format(goals_json))
+#
+# with open('data/roles.js', 'w') as f:
+#     f.write("module.exports = {0}".format(roles_json))
+#     # print("module.exports = {0}".format(roles_json))
+#
 with open('data/permissions.js', 'w') as f:
-    f.write("module.exports = {0}".format(permissions_json))
-    # print("module.exports = {0}".format(permissions_json))
-
-with open('data/role_permission.js', 'w') as f:
-    f.write("module.exports = {0}".format(role_permission_json))
-    # print("module.exports = {0}".format(role_permission_json))
+    # f.write("module.exports = {0}".format(permissions_json))
+    print("module.exports = {0}".format(permissions_json))
+#
+# with open('data/role_permission.js', 'w') as f:
+#     f.write("module.exports = {0}".format(role_permission_json))
+#     # print("module.exports = {0}".format(role_permission_json))

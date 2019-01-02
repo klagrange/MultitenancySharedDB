@@ -28,6 +28,16 @@ async function roleIsPartOfOrg(roleId, orgId) {
   return role.length > 0;
 }
 
+async function userExists(userId) {
+  const user = await UserSass.query().where('id', userId);
+  return user.length > 0;
+}
+
+async function deleteUser(userId) {
+  const deletedUser = await UserSass.query().delete().where('id', userId);
+  return deletedUser;
+}
+
 async function findUserAll() {
   const users = await UserSass.query();
   return users;
@@ -58,9 +68,24 @@ async function insertUser(user) {
 //   .then(console.log)
 //   .catch(console.log)
 
+// userExists(3)
+//   .then(console.log)
+//   .catch(console.log)
+
+// deleteUser(1)
+//   .then(console.log)
+//   .catch(console.log)
+
+findUserById(2222)
+  .then(console.log)
+  .catch(console.log)
+
 module.exports = {
   findUserAll,
   findUserFromOrg,
   roleIsPartOfOrg,
   insertUser,
+  deleteUser,
+  userExists,
+  findUserById,
 }

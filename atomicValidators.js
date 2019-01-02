@@ -4,7 +4,6 @@ const {
   roleIsPartOfOrg
 } = require('./atomicQueries.js')
 
-
 async function validateUserPayload(userPayload) {
   try {
     const user = await UserSass.fromJson(userPayload)

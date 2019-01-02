@@ -27,6 +27,10 @@ async function auth(req, res, next) {
   res.locals.requesterOrganizationId = requesterOrganizationId;
   res.locals.requesterUserId = userEager.id;
 
+  console.log("============================================================")
+  console.log(permissions)
+  console.log("============================================================")
+
   return next();
 }
 

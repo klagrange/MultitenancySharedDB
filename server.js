@@ -9,6 +9,7 @@ const Organization = require('./models/Organization');
 const auth = require('./middlewares/auth');
 
 const userRouter = require('./routes/user');
+const roleRouter = require('./routes/role');
 
 /**
  *
@@ -116,7 +117,7 @@ app.use(auth);
 
 app.use('/users', userRouter);
 // app.use('/organizations', organizationRouter);
-// app.use('/roles', roleRouter);
+app.use('/roles', roleRouter);
 // app.use('/goals', goalRouter);
 
 app.listen(port, () => {
