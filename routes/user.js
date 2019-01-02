@@ -114,7 +114,6 @@ const {
       deleteUser(userIdToDelete)
       return res.send('okay')
     }
-
   });
 })();
 

@@ -1,37 +1,20 @@
-const options = {
-  test: {
-    client: 'pg',
-    connection: {
-      host : '127.0.0.1',
-      port: '5433',
-      user : 'postgres',
-      password : 'mysecretpassword',
-      database : 'user-management-test'
-    },
-    migrations: {
-      directory: './db/migrations',
-    },
-    seeds: {
-      directory: './db/seeds',
-    },
-  },
-  development: {
-    client: 'pg',
-    connection: {
-      host : '127.0.0.1',
-      port: '5432',
-      user : 'postgres',
-      password : 'mysecretpassword',
-      database : 'user-management'
-    },
-    migrations: {
-      directory: './db/migrations',
-    },
-    seeds: {
-      directory: './db/seeds',
-    },
-  }
-};
+const config = require('config');
 
-const environment = process.env.NODE_ENV || 'development';
-module.exports = options[environment];
+const options = {
+    client: config.get('client'),
+    connection: {
+      host : config.get('connection.host'),
+      port: config.get('connection.port'),
+      user : config.get('connection.user'),
+      password : config.get('connection.password'),
+      database : config.get('connection.database')
+    },
+    migrations: {
+      directory: config.get('migrations.directory'),
+    },
+    seeds: {
+      directory: config.get('seeds.directory'),
+    },
+}
+
+module.exports = options;

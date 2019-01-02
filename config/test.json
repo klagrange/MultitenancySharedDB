@@ -1,0 +1,6 @@
+{
+    "connection": {
+        "port": "5433",
+        "database" : "user-management-test"
+    }
+}

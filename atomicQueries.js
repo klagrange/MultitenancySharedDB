@@ -1,7 +1,7 @@
 const UserSass = require('./models/UserSass');
-const { Model, ValidationError } = require('objection');
-const Knex = require('knex');
-const knexConfig = require('./knexfile');
+// const { Model } = require('objection');
+// const Knex = require('knex');
+// const knexConfig = require('./knexfile');
 const Role = require('./models/Role');
 const Organization = require('./models/Organization');
 
@@ -10,8 +10,8 @@ const Organization = require('./models/Organization');
  *  knex/objection.js wiring
  *
  */
-const knex = Knex(knexConfig);
-Model.knex(knex);
+// const knex = Knex(knexConfig);
+// Model.knex(knex);
 
 async function roleExists(roleId) {
   const role = await Role.query().where('id', roleId);
@@ -76,9 +76,9 @@ async function insertUser(user) {
 //   .then(console.log)
 //   .catch(console.log)
 
-findUserById(2222)
-  .then(console.log)
-  .catch(console.log)
+// findUserById(2222)
+//   .then(console.log)
+//   .catch(console.log)
 
 module.exports = {
   findUserAll,
