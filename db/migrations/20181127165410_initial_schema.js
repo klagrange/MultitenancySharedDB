@@ -22,6 +22,8 @@ exports.up = function(knex, Promise) {
     .createTable('user_sass', table => {
       table.increments('id').primary()
       table.string('name')
+      table.string('login')
+      table.string('password')
       table.string('token')
       table
         .integer('organization_id')

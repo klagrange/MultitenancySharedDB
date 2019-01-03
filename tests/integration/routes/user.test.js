@@ -3,12 +3,10 @@ const express = require('express');
 const { expect } = require('chai');
 
 describe('When trying to access ressources related to user', () => {
-  let knex;
-
   before((done) => {
     this.knex = require('../../../startup/db');
     const app = express();
-    require('../../../startup/app')(app);
+    require('../../../startup/app')(app, logErrors=false);
     this.app = app;
     done();
   })

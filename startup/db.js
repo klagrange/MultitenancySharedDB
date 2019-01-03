@@ -7,10 +7,14 @@ const knex = Knex(knexConfig);
 knex.raw('select 1+1 as result')
   .then(() => {
     console.log('connection established.')
-  }).catch(() => {
-    console.log('cannot establish connection to db.')
-    knex.destroy();
-    process.exit(1)
+  })
+  .catch((e) => {
+    if (e.code === 'ECONNREFUSED') {
+      console.log('[FATAL] cannot establish connection to db.')
+      console.log(e)
+      knex.destroy();
+      process.exit(1)
+    }
   });
 
 Model.knex(knex);

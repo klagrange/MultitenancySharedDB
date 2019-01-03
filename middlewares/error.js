@@ -1,14 +1,20 @@
 
-module.exports = (err, req, res, next) => {
-    if (err) {
-      console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
-      console.log(err)
-      if (err.data || err.message) {
-        res.status(err.statusCode || err.status || 500).send(err.data || err.message || {});
+module.exports = (log=true) =>  
+  (err, req, res, next) => {
+      if (err) {
+
+        if (log) {
+          console.log('')
+          console.log(err);
+        }
+
+        if (err.data || err.message) {
+          res.status(err.statusCode || err.status || 500).send(err.data || err.message || {});
+        } else {
+          res.sendStatus(err.statusCode || 500);
+        }
       } else {
-        res.sendStatus(err.statusCode || 500);
+        next();
       }
-    } else {
-      next();
     }
-  }
+
