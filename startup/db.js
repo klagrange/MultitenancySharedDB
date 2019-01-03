@@ -7,9 +7,12 @@ const knex = Knex(knexConfig);
 knex.raw('select 1+1 as result')
   .then(() => {
     console.log('connection established.')
-  }).catch(() => { 
+  }).catch(() => {
     console.log('cannot establish connection to db.')
-    process.exit(1) 
+    knex.destroy();
+    process.exit(1)
   });
 
 Model.knex(knex);
+
+module.exports = knex;

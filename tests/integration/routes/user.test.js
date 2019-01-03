@@ -1,12 +1,28 @@
 const request = require('supertest');
+const express = require('express');
 const { expect } = require('chai');
 
-describe('YOYOOYO', () => {
+describe('When trying to access ressources related to user', () => {
+  let knex;
 
-  beforeEach(() => { server = require('../../../server'); })
+  before((done) => {
+    this.knex = require('../../../startup/db');
+    const app = express();
+    require('../../../startup/app')(app);
+    this.app = app;
+    done();
+  })
 
-  it('should return 401 if no token is provided', () => {
-    // console.log(server)
-    expect(2).to.equal(2);
+  after(() => {
+    this.knex.destroy();
+  })
+
+  it('should rejected me if I do not have an access token', () => {
+    request(this.app)
+      .get('/users')
+      .expect(401)
+      .end((err, res) => {
+        if (err) throw err;
+      })
   });
 });
