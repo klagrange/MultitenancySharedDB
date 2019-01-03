@@ -4,10 +4,10 @@ const error = require('../middlewares/error');
 const userRouter = require('../routes/user');
 const roleRouter = require('../routes/role');
 
-module.exports = (app, logErrors = true) => {
+module.exports = (app, logErrors=true) => {
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(auth);
+    app.use(auth)
     app.use('/users', userRouter);
     app.use('/roles', roleRouter);
     app.use(error(logErrors));

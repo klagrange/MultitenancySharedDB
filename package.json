@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "/bin/bash db_ctl.sh test:restart; NODE_ENV=test mocha 'tests/**/*.js'; /bin/bash db_ctl.sh test:stop"
+    "test": "NODE_ENV=test mocha 'tests/**/*.js'",
+    "test:full": "/bin/bash db_ctl.sh test:restart; NODE_ENV=test mocha 'tests/**/*.js'; /bin/bash db_ctl.sh test:stop"
   },
   "repository": {
     "type": "git",

@@ -1,10 +1,10 @@
 const { isEmpty } = require('lodash');
 const { createStatusCodeError } = require('../utils');
 
-function allowOnlyPermissions(permissions) {
+function allowOnlyPermissions(ressourcePermissions) {
   return function isAllowed (req, res, next) {
     const requesterPermissions = new Set(res.locals.requesterPermissions);
-    const allowedPermissions = new Set(permissions);
+    const allowedPermissions = new Set(ressourcePermissions);
     const intersection = [...requesterPermissions]
       .filter(requesterPermission => allowedPermissions.has(requesterPermission));
 

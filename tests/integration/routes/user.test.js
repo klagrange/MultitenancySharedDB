@@ -15,13 +15,25 @@ describe('When trying to access ressources related to user', () => {
     this.knex.destroy();
   })
 
-  it('should rejected me if I do not have an access token', () => {
+  it('should rejected me if I have not authenticated', (done) => {
     request(this.app)
       .get('/users')
-      .set('token', '1')
       .expect(401)
       .end((err, res) => {
         if (err) throw err;
+        done();
       })
   });
+
+  it('should be able to access the resource if I am authorized', (done) => {
+    request(this.app)
+      .get('/users')
+      .set('token', '1')
+      .expect(200)
+      .end((err, res) => {
+        if (err) throw err;
+        done();
+      })
+  });
+
 });
