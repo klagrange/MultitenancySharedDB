@@ -1,5 +1,6 @@
 const { Model, ValidationError } = require('objection');
 const UserSass = require('./models/UserSass');
+const Role = require('./models/Role');
 const {
   roleIsPartOfOrg
 } = require('./atomicQueries.js')
@@ -22,6 +23,20 @@ async function validateUserPayload(userPayload) {
   }
 }
 
+async function validateRolePayload(rolePayload) {
+  try {
+    const role = await Role.fromJson(rolePayload)
+
+    return role;
+  } catch (e) {
+    if (e instanceof ValidationError) {
+      throw (ValidationError);
+    } else {
+      throw (e);
+    }
+  }
+}
+
 // const user = {
 //   name: 'Keith',
 //   organization_id: 1,
@@ -34,5 +49,6 @@ async function validateUserPayload(userPayload) {
 
 
 module.exports = {
-  validateUserPayload
+  validateUserPayload,
+  validateRolePayload
 }

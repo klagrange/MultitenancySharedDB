@@ -1,10 +1,8 @@
-
 module.exports = (log=true) =>
   (err, req, res, next) => {
     if (err) {
-
       if (log) {
-        console.log('')
+        console.log('\n-------------------------------------------------------')
         console.log(err);
       }
 
@@ -17,4 +15,6 @@ module.exports = (log=true) =>
       next();
     }
   }
+
+
 

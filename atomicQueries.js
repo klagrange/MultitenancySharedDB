@@ -7,6 +7,21 @@ async function roleExists(roleId) {
   return role.length > 0;
 }
 
+async function findRoles() {
+  const roles = await Role.query();
+  return roles;
+}
+
+async function findRolesFromOrg(orgId) {
+  const roles = await Role.query().where('organization_id', orgId);
+  return roles;
+}
+
+async function addRole(role) {
+  const insertedRole = await Role.query().insertGraph(role);
+  return insertedRole;
+}
+
 async function orgExists(orgId) {
   const org = await Organization.query().where('id', orgId);
   return org.length > 0;
@@ -55,4 +70,7 @@ module.exports = {
   deleteUser,
   userExists,
   findUserById,
+  findRoles,
+  addRole,
+  findRolesFromOrg
 }
