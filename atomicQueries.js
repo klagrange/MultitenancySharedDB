@@ -2,8 +2,8 @@ const { transaction } = require('objection');
 const UserSass = require('./models/UserSass');
 const Role = require('./models/Role');
 const RolePermission = require('./models/RolePermission');
-const Organization = require('./models/Organization');
 const Permission = require('./models/Permission');
+const Organization = require('./models/Organization');
 const {
   createStatusCodeError
 } = require('./utils');
@@ -28,6 +28,11 @@ async function permissionIsAssignedToRole(permissionId, roleId) {
   return rolePermission.length > 0;
 }
 
+async function findOrgs() {
+  const orgs = await Organization.query();
+  return orgs;
+}
+
 async function findRoles() {
   const roles = await Role.query();
   return roles;
@@ -38,13 +43,25 @@ async function findRolesFromOrg(orgId) {
   return roles;
 }
 
+async function addOrg(org) {
+  const insertedOrg = await Organization.query().insertGraph(org);
+  return insertedOrg;
+}
+
 async function addRole(role) {
   const insertedRole = await Role.query().insertGraph(role);
   return insertedRole;
 }
 
-async function orgExists(orgId) {
-  const org = await Organization.query().where('id', orgId);
+// async function orgExists(orgId) {
+//   const org = await Organization.query().where('id', orgId);
+//   return org.length > 0;
+// }
+
+async function orgExistsByName(name) {
+  const org = await Organization.query().where('name', name)
+  
+  console.log(org)
   return org.length > 0;
 }
 
@@ -122,5 +139,8 @@ module.exports = {
   permissionExists,
   roleExists,
   permissionIsAssignedToRole,
-  roleIsFromOrg
+  roleIsFromOrg,
+  findOrgs,
+  addOrg,
+  orgExistsByName
 }

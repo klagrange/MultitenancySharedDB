@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
 
     .createTable('organization', table => {
       table.increments('id').primary();
-      table.string('name');
+      table.string('name').unique();
       table.string('description');
     })
 

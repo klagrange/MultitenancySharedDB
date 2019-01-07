@@ -1,6 +1,7 @@
 const { Model, ValidationError } = require('objection');
 const UserSass = require('./models/UserSass');
 const Role = require('./models/Role');
+const Organization = require('./models/Organization');
 const {
   roleIsPartOfOrg,
   permissionExists,
@@ -53,6 +54,20 @@ async function validateRolePayload(rolePayload) {
   }
 }
 
+async function validateOrgPayload(orgPayload) {
+  try {
+    const org = await Organization.fromJson(orgPayload)
+
+    return org;
+  } catch (e) {
+    if (e instanceof ValidationError) {
+      throw (ValidationError);
+    } else {
+      throw (e);
+    }
+  }
+}
+
 // const user = {
 //   name: 'Keith',
 //   organization_id: 1,
@@ -67,5 +82,6 @@ async function validateRolePayload(rolePayload) {
 module.exports = {
   validateUserPayload,
   validateRolePayload,
-  validateRoleAndPermissionExistence
+  validateRoleAndPermissionExistence,
+  validateOrgPayload
 }

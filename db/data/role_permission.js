@@ -32,6 +32,14 @@ module.exports = [
     "permission_id": 14
   },
   {
+    "role_id": 2,
+    "permission_id": 16
+  },
+  {
+    "role_id": 2,
+    "permission_id": 17
+  },
+  {
     "role_id": 16,
     "permission_id": 2
   },

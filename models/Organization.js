@@ -5,6 +5,19 @@ class Organization extends Model {
     return 'organization';
   }
 
+
+  static get jsonSchema() {
+    return {
+      type: 'object',
+      required: ['name'],
+
+      properties: {
+        name: { type: 'string', minLength: 1, maxLength: 255 },
+        description: { type: 'string', minLength: 1, maxLength: 255 },
+      },
+    };
+  }
+
   static get relationMappings() {
     return {
       users: {

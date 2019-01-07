@@ -13,7 +13,8 @@ const {
   addPermissionToRole,
   findPermissionById,
   permissionIsAssignedToRole,
-  roleIsFromOrg
+  roleIsFromOrg,
+  orgExistsByName
 } = require('./atomicQueries');
 
 
@@ -77,3 +78,7 @@ require('./startup/db');
 // roleIsFromOrg(1, 1)
 //   .then(console.log)
 //   .catch(console.log)
+
+orgExistsByName(name='Terrell Ltd')
+  .then(console.log)
+  .catch(console.log)

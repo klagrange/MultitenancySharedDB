@@ -77,12 +77,12 @@ module.exports = [
     {
         "id": 16,
         "code": "GYQV7860011968348",
-        "description": "Pm mention them key rich. Move why indicate wish risk attention phone."
+        "description": "Can view organizations."
     },
     {
         "id": 17,
         "code": "QERS6914775236148",
-        "description": "Hope her look food teach threat dream. Word face but weight character type executive. At draw stage Mr all."
+        "description": "Can add an organization."
     },
     {
         "id": 18,

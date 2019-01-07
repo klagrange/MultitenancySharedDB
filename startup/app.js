@@ -4,6 +4,7 @@ const error = require('../middlewares/error');
 const userRouter = require('../routes/user');
 const roleRouter = require('../routes/role');
 const meRouter = require('../routes/me');
+const organizationRouter = require('../routes/organization');
 
 module.exports = (app, logErrors=true) => {
     app.use(bodyParser.json());
@@ -12,5 +13,6 @@ module.exports = (app, logErrors=true) => {
     app.use('/me', meRouter);
     app.use('/users', userRouter);
     app.use('/roles', roleRouter);
+    app.use('/organizations', organizationRouter);
     app.use(error(logErrors));
 }
