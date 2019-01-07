@@ -67,12 +67,12 @@ module.exports = [
     {
         "id": 14,
         "code": "OZWQ5047634703973",
-        "description": "Understand nearly successful edge friend so. Race case south amount. Remember ground continue early friend health effect.\nWind bag purpose democratic local source."
+        "description": "Can add permission to existing role."
     },
     {
         "id": 15,
         "code": "XMNZ4595820797783",
-        "description": "Forward turn fish your. Increase none since. Each law any eight this city.\nIncrease surface teacher affect western describe. Something reflect third fire eat gun. Send professional find catch senior."
+        "description": "Can add permission to existing role only if the role is from own organization only."
     },
     {
         "id": 16,

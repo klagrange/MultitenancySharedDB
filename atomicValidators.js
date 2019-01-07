@@ -2,8 +2,24 @@ const { Model, ValidationError } = require('objection');
 const UserSass = require('./models/UserSass');
 const Role = require('./models/Role');
 const {
-  roleIsPartOfOrg
+  roleIsPartOfOrg,
+  permissionExists,
+  roleExists
 } = require('./atomicQueries.js')
+
+async function validateRoleAndPermissionExistence(roleId, permissionId) {
+  try {
+
+    const p = await permissionExists(permissionId);
+    const r = await roleExists(roleId);
+
+    if(!p || !r) {
+      throw Error
+    }
+  } catch(e) {
+    throw (e);
+  }
+}
 
 async function validateUserPayload(userPayload) {
   try {
@@ -50,5 +66,6 @@ async function validateRolePayload(rolePayload) {
 
 module.exports = {
   validateUserPayload,
-  validateRolePayload
+  validateRolePayload,
+  validateRoleAndPermissionExistence
 }

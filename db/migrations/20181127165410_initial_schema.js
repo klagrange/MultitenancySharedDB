@@ -53,16 +53,11 @@ exports.up = function(knex, Promise) {
         .onDelete('SET NULL');
     })
 
-
-
-
-
     .createTable('permission', table => {
       table.increments('id').primary();
       table.string('code');
       table.string('description');
     })
-
 
     .createTable('role_permission', table => {
       table.increments('id').primary();
@@ -78,6 +73,7 @@ exports.up = function(knex, Promise) {
         .references('id')
         .inTable('permission')
         .onDelete('CASCADE');
+      table.unique(['role_id', 'permission_id'])
     })
 };
 
@@ -85,6 +81,4 @@ exports.down = function(knex, Promise) {
   return knex.schema
     .dropTableIfExists('goal')
     .dropTableIfExists('permission')
-
-
 };

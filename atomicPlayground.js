@@ -8,12 +8,18 @@ const {
   findUserById,
   findRoles,
   addRole,
-  findRolesFromOrg
+  findRolesFromOrg,
+  findRoleById,
+  addPermissionToRole,
+  findPermissionById,
+  permissionIsAssignedToRole,
+  roleIsFromOrg
 } = require('./atomicQueries');
 
 
 const {
-  validateRolePayload
+  validateRolePayload,
+  validateRoleAndPermissionExistence
 } = require('./atomicValidators');
 
 // wire knex to objection
@@ -42,5 +48,32 @@ require('./startup/db');
 //   .catch(console.log)
 
 // validateRolePayload(role)
+//   .then(console.log)
+//   .catch(console.log)
+
+// findRoleById(1)
+//   .then(console.log)
+//   .catch(console.log)
+//
+// findPermissionById(2)
+//   .then(console.log)
+//   .catch(console.log)
+
+// addPermissionToRole(1, 2)
+//   .then(console.log)
+//   .catch(e => {
+//     console.log('xxxxxxxxxxxxxxxx')
+//     console.log(e)
+//   })
+
+// validateRoleAndPermissionExistence(1, 2)
+//   .then(console.log)
+//   .catch(console.log)
+
+// permissionIsAssignedToRole(1, 23333)
+//   .then(console.log)
+//   .catch(console.log)
+
+// roleIsFromOrg(1, 1)
 //   .then(console.log)
 //   .catch(console.log)
