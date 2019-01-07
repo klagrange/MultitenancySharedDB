@@ -33,12 +33,15 @@ async function findOrgs() {
   return orgs;
 }
 
-async function findRoles(eager=undefined, orgId=undefined) {
+async function findRoles(eager=undefined, orgId=undefined, roleId=undefined) {
+  console.log(roleId)
+
   const roles = await Role
     .query()
     .skipUndefined()
     .allowEager('permissions')
     .eager(eager)
+    .where('id', roleId)
     .where('organization_id', orgId)
 
   return roles;
@@ -94,6 +97,11 @@ async function deleteOrg(orgId) {
   return deletedOrg;
 }
 
+async function deleteRole(roleId) {
+  const deletedRole = await Role.query().delete().where('id', roleId);
+  return deletedRole;
+}
+
 async function findUserAll() {
   const users = await UserSass.query();
   return users;
@@ -119,7 +127,7 @@ async function findPermissionById(permissionId) {
   return permission || null;
 }
 
-async function findRoleById(roleId) {
+async function findRole(roleId) {
   const role = await Role.query().where('id', roleId).first();
   return role || null;
 }
@@ -147,7 +155,6 @@ module.exports = {
   findRoles,
   addRole,
   findRolesFromOrg,
-  findRoleById,
   addPermissionToRole,
   findPermissionById,
   permissionExists,
@@ -158,5 +165,6 @@ module.exports = {
   addOrg,
   orgExistsByName,
   deleteRolePermission,
-  deleteOrg
+  deleteOrg,
+  deleteRole
 }

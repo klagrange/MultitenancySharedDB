@@ -102,12 +102,12 @@ module.exports = [
     {
         "id": 21,
         "code": "JNLW0698833451904",
-        "description": "Central both occur whom cell. Why level her tax. Stand series list law. Opportunity laugh other international."
+        "description": "xxx"
     },
     {
         "id": 22,
         "code": "USUL3556272119368",
-        "description": "Box yeah never dog mouth despite small. None analysis movement. Affect learn appear safe sport grow why."
+        "description": "xxx"
     },
     {
         "id": 23,

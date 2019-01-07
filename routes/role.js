@@ -11,7 +11,8 @@ const {
   addPermissionToRole,
   permissionIsAssignedToRole,
   roleIsFromOrg,
-  deleteRolePermission
+  deleteRolePermission,
+  deleteRole
 } = require('../atomicQueries');
 const {
   validateRolePayload
@@ -83,6 +84,45 @@ const {
     }
   });
 })();
+
+/* [[ REMOVE ROLE ]]
+ *
+ * TAVT8651666899880: can delete a role from any organization.
+ * BMMV8632489659857: can delete a role from own organization only.
+ */
+(function() {
+  const permissions = ['TAVT8651666899880', 'BMMV8632489659857']
+  router.delete('/:id', allowOnlyPermissions(permissions), async (req, res, next) => {
+    const roleToDelete = req.params.id;
+    const {
+      requesterPermissions,
+      requesterOrganizationId,
+    } = res.locals
+
+    /* {{ common validations }} */
+    if (!Number(roleToDelete)) return next(createStatusCodeError(400));
+  
+    /* {{ can add a role in any organization }} */
+    if(requesterPermissions.includes(permissions[0])) {
+      await deleteRole(roleToDelete)
+      return res.send('okay')
+    }
+
+    /* {{ can add a role in own organization only }} */
+    if(requesterPermissions.includes(permissions[1])) {
+      const roleInDb = await findRoles(eager=undefined, orgId=undefined, roleId=roleToDelete)
+      if(roleInDb.length === 0) return res.send('role does not exist');
+
+      if(roleInDb[0]['organization_id'] !== requesterOrganizationId) {
+        return next(createStatusCodeError(403));
+      }
+
+      await deleteRole(roleToDelete)
+      return res.send('okay')
+    }
+  });
+})();
+
 
 
 /* [[ ADD PERMISSION TO A GIVEN ROLE ]]

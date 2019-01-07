@@ -16,7 +16,8 @@ const {
   roleIsFromOrg,
   orgExistsByName,
   deleteRolePermission,
-  deleteOrg
+  deleteOrg,
+  deleteRole
 } = require('./atomicQueries');
 
 
@@ -89,6 +90,14 @@ require('./startup/db');
 //   .then(console.log)
 //   .catch(console.log)
 
-deleteOrg(5)
+// deleteOrg(5)
+//   .then(console.log)
+//   .catch(console.log)
+
+// deleteRole(18)
+//   .then(console.log)
+//   .catch(console.log)
+
+findRoles(undefined, undefined, roleId=15)
   .then(console.log)
   .catch(console.log)
