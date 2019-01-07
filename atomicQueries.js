@@ -53,10 +53,10 @@ async function addRole(role) {
   return insertedRole;
 }
 
-// async function orgExists(orgId) {
-//   const org = await Organization.query().where('id', orgId);
-//   return org.length > 0;
-// }
+async function orgExists(orgId) {
+  const org = await Organization.query().where('id', orgId);
+  return org.length > 0;
+}
 
 async function orgExistsByName(name) {
   const org = await Organization.query().where('name', name)
@@ -73,6 +73,12 @@ async function roleIsPartOfOrg(roleId, orgId) {
 async function userExists(userId) {
   const user = await UserSass.query().where('id', userId);
   return user.length > 0;
+}
+
+async function deleteRolePermission(roleId, permissionId) {
+  const rolePerm = await RolePermission.query().delete().where('role_id', roleId).where('permission_id', permissionId)
+  return rolePerm;
+
 }
 
 async function deleteUser(userId) {
@@ -142,5 +148,6 @@ module.exports = {
   roleIsFromOrg,
   findOrgs,
   addOrg,
-  orgExistsByName
+  orgExistsByName,
+  deleteRolePermission
 }

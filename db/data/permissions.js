@@ -87,12 +87,12 @@ module.exports = [
     {
         "id": 18,
         "code": "HZBT5391786394074",
-        "description": "Black away chance wonder. Whose weight improve need material hot would.\nNor under send deep."
+        "description": "Can remove a permission to existing role."
     },
     {
         "id": 19,
         "code": "TOQJ0598359864173",
-        "description": "First movie interest style seven physical. All yet state across same ready draw. Single letter our since manage water success."
+        "description": "Can remove a permission to an existing role only if the role is from own organization only."
     },
     {
         "id": 20,

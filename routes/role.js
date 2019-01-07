@@ -10,7 +10,8 @@ const {
   roleExists,
   addPermissionToRole,
   permissionIsAssignedToRole,
-  roleIsFromOrg
+  roleIsFromOrg,
+  deleteRolePermission
 } = require('../atomicQueries');
 const {
   validateRolePayload
@@ -82,21 +83,54 @@ const {
   });
 })();
 
+
 /* [[ ADD PERMISSION TO A GIVEN ROLE ]]
- *
- * OZWQ5047634703973: can add permission to existing role.
- * XMNZ4595820797783: can add permission to existing role only if the role is from own organization only.
+ * [[ REMOVE PERMISSION FOR A GIVEN ROLE ]]
  */
 (function() {
-  function validatePayload(payload) {
-    const schema = {
-      permissionId: Joi.number().required()
-    };
-    return Joi.validate(payload, schema);
+  async function commonValidations(roleId, payload) {
+    function validatePayload(payload) {
+      const schema = {
+        permissionId: Joi.number().required()
+      };
+      return Joi.validate(payload, schema);
+    }
+
+    if (!Number(roleId)) return createStatusCodeError(400);
+    const { error } = validatePayload(payload);
+    if (error) return createStatusCodeError(400, error.details[0].message);
+  
+    const permissionId = payload.permissionId
+    const pExists = await permissionExists(permissionId)
+    const rExists = await roleExists(roleId)
+
+    if (!pExists) return createStatusCodeError(400, 'permission does not exist');
+    if (!rExists) return createStatusCodeError(400, 'role does not exist');
+
+    return true;
   }
 
-  const permissions = ['OZWQ5047634703973', 'XMNZ4595820797783']
-  router.post('/:id/permission', allowOnlyPermissions(permissions), async (req, res, next) => {
+  async function insert(permissionId, roleId, res) {
+    const pIsAssignedToR = await permissionIsAssignedToRole(permissionId, roleId);
+
+    if (pIsAssignedToR) return res.status(400).send('permission is already assigned to this role');
+    const inserted = await addPermissionToRole(roleId, permissionId)
+
+    return res.status(201).send(inserted);
+  }
+
+  async function del(permissionId, roleId, res) {
+    await deleteRolePermission(roleId, permissionId);
+    return res.sendStatus(200);
+  }
+
+  /* [[ ADD PERMISSION TO A GIVEN ROLE ]]
+  *
+  * OZWQ5047634703973: can add permission to existing role.
+  * XMNZ4595820797783: can add permission to existing role only if the role is from own organization only.
+  */
+  const permissionsAdd = ['OZWQ5047634703973', 'XMNZ4595820797783']
+  router.post('/:id/permission', allowOnlyPermissions(permissionsAdd), async (req, res, next) => {
     const {
       requesterPermissions,
       requesterOrganizationId,
@@ -105,34 +139,56 @@ const {
     const roleId = req.params.id
 
     /* {{ common validations }} */
-    if (!Number(roleId)) return next(createStatusCodeError(400));
-
-    const { error } = validatePayload(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-
-    const permissionId = req.body.permissionId
-    const pExists = await permissionExists(permissionId)
-    const rExists = await roleExists(roleId)
-    const pIsAssignedToR = await permissionIsAssignedToRole(permissionId, roleId);
-
-    if (!pExists) return next(createStatusCodeError(400, 'permission does not exist'));
-    if (!rExists) return next(createStatusCodeError(400, 'role does not exist'));
+    const validated = await commonValidations(roleId, req.body)
+    if(validated instanceof Error) return next(validated)
 
     /* {{ can add permission to existing role }} */
-    if(requesterPermissions.includes(permissions[0])) {
-      if (pIsAssignedToR) res.status(201).send('okay');
-      const inserted = await addPermissionToRole(roleId, permissionId)
-      return res.status(201).send(inserted);
+    const permissionId = req.body.permissionId
+    if(requesterPermissions.includes(permissionsAdd[0])) {
+      return insert(permissionId, roleId, res)
     }
 
     /* {{ can add permission to existing role only if the role is from own organization only }} */
-    if(requesterPermissions.includes(permissions[1])) {
+    if(requesterPermissions.includes(permissionsAdd[1])) {
       const rIsFromO = await roleIsFromOrg(roleId, requesterOrganizationId)
       if(!rIsFromO) return next(createStatusCodeError(401, 'bye'));
 
-      if (pIsAssignedToR) res.status(201).send('okay');
-      const inserted = await addPermissionToRole(roleId, permissionId)
-      return res.status(201).send(inserted);
+      return insert(permissionId, roleId, res)
+    }
+  });
+
+
+  /* [[ REMOVE PERMISSION FOR A GIVEN ROLE ]]
+  * 
+  * HZBT5391786394074: can remove a permission to existing role.
+  * TOQJ0598359864173: can remove a permission to an existing role only if the role is from own organization only.
+  * 
+  */
+  const permissionsDel = ['OZWQ5047634703973', 'XMNZ4595820797783']
+  router.delete('/:id/permission', allowOnlyPermissions(permissionsDel), async (req, res, next) => {
+    const {
+      requesterPermissions,
+      requesterOrganizationId,
+    } = res.locals
+
+    const roleId = req.params.id
+
+    /* {{ common validations }} */
+    const validated = await commonValidations(roleId, req.body)
+    if(validated instanceof Error) return next(validated)
+
+    /* {{ can add permission to existing role }} */
+    const permissionId = req.body.permissionId
+    if(requesterPermissions.includes(permissionsDel[0])) {
+      return del(permissionId, roleId, res)
+    }
+
+    /* {{ can add permission to existing role only if the role is from own organization only }} */
+    if(requesterPermissions.includes(permissionsDel[1])) {
+      const rIsFromO = await roleIsFromOrg(roleId, requesterOrganizationId)
+      if(!rIsFromO) return next(createStatusCodeError(401, 'bye'));
+
+      return del(permissionId, roleId, res);
     }
   });
 })();
