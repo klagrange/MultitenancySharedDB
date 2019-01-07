@@ -33,8 +33,14 @@ async function findOrgs() {
   return orgs;
 }
 
-async function findRoles() {
-  const roles = await Role.query();
+async function findRoles(eager=undefined, orgId=undefined) {
+  const roles = await Role
+    .query()
+    .skipUndefined()
+    .allowEager('permissions')
+    .eager(eager)
+    .where('organization_id', orgId)
+
   return roles;
 }
 
@@ -60,7 +66,7 @@ async function orgExists(orgId) {
 
 async function orgExistsByName(name) {
   const org = await Organization.query().where('name', name)
-  
+
   console.log(org)
   return org.length > 0;
 }

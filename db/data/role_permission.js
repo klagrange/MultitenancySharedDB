@@ -1,4 +1,5 @@
 module.exports = [
+  // "SUPER ADMIN"
   {
     "role_id": 2,
     "permission_id": 1
@@ -14,10 +15,6 @@ module.exports = [
   {
     "role_id": 2,
     "permission_id": 7
-  },
-  {
-    "role_id": 2,
-    "permission_id": 8
   },
   {
     "role_id": 2,
@@ -37,12 +34,10 @@ module.exports = [
   },
   {
     "role_id": 2,
-    "permission_id": 17
-  },
-  {
-    "role_id": 2,
     "permission_id": 18
   },
+
+  // "ORG ADMIN"
   {
     "role_id": 16,
     "permission_id": 2
@@ -70,5 +65,9 @@ module.exports = [
   {
     "role_id": 16,
     "permission_id": 15
+  },
+  {
+    "role_id": 16,
+    "permission_id": 19
   },
 ]

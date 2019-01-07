@@ -73,7 +73,7 @@ const {
     /* {{ can add a user in same organization only }} */
     if(requesterPermissions.includes(permissions[1])) {
       if (req.body.organization_id !== requesterOrganizationId)
-        return next(createStatusCodeError(401));
+        return next(createStatusCodeError(403));
 
       const insertedUser = await insertUser(req.body);
       return res.status(201).send(insertedUser);
@@ -110,7 +110,7 @@ const {
     /* {{ can delete user from own organization only }} */
     if(requesterPermissions.includes(permissions[1])) {
        if (userInDb[0].organization_id !== requesterOrganizationId)
-        return next(createStatusCodeError(401));
+        return next(createStatusCodeError(403));
 
       deleteUser(userIdToDelete)
       return res.send('okay')

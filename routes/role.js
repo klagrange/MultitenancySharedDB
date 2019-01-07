@@ -35,7 +35,8 @@ const {
 
     /* {{ can view roles }} */
     if(requesterPermissions.includes(permissions[0])) {
-      const roles = await findRoles();
+      // const roles = await findRoles();
+      const roles = await findRoles(eager=req.query.eager, orgId=req.query.orgId)
       return res.send(roles);
     }
 
@@ -75,7 +76,7 @@ const {
     /* {{ can add a role in own organization only }} */
     if(requesterPermissions.includes(permissions[1])) {
       if (req.body.organization_id !== requesterOrganizationId)
-        return next(createStatusCodeError(401));
+        return next(createStatusCodeError(403));
 
       const insertedRole = await addRole(req.body);
       return res.status(201).send(insertedRole);
@@ -151,7 +152,7 @@ const {
     /* {{ can add permission to existing role only if the role is from own organization only }} */
     if(requesterPermissions.includes(permissionsAdd[1])) {
       const rIsFromO = await roleIsFromOrg(roleId, requesterOrganizationId)
-      if(!rIsFromO) return next(createStatusCodeError(401, 'bye'));
+      if(!rIsFromO) return next(createStatusCodeError(403));
 
       return insert(permissionId, roleId, res)
     }
@@ -186,7 +187,7 @@ const {
     /* {{ can add permission to existing role only if the role is from own organization only }} */
     if(requesterPermissions.includes(permissionsDel[1])) {
       const rIsFromO = await roleIsFromOrg(roleId, requesterOrganizationId)
-      if(!rIsFromO) return next(createStatusCodeError(401, 'bye'));
+      if(!rIsFromO) return next(createStatusCodeError(403));
 
       return del(permissionId, roleId, res);
     }
