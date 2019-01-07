@@ -13,7 +13,8 @@ const {
   roleIsFromOrg,
   findOrgs,
   addOrg,
-  orgExistsByName
+  orgExistsByName,
+  deleteOrg
 } = require('../atomicQueries');
 const {
   validateRolePayload,
@@ -70,6 +71,27 @@ const {
 })();
 
 
+/* [[ DELETE ORGANIZATION ]]
+ *
+ * XQXY1977826757764: can remove an organization.
+ * 
+ * !!! CASCADE OPERATION !!!
+ * 
+ */
+(function() {
+  const permissions = ['XQXY1977826757764']
+  router.delete('/:id', allowOnlyPermissions(permissions), async (req, res, next) => {
+    const orgToDelete = req.params.id;
+    const { requesterPermissions } = res.locals
 
+    if (!Number(orgToDelete)) return next(createStatusCodeError(400));
+
+    /* {{ can remove an organization }} */
+    if(requesterPermissions.includes(permissions[0])) {
+      await deleteOrg(orgToDelete)
+      return res.send('okay');
+    }
+  });
+})();
 
 module.exports = router;

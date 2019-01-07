@@ -98,7 +98,7 @@ const {
     /* {{ common validations }} */
     userInDb = await findUserById(userIdToDelete);
     if (userInDb.length === 0) {
-      return next(createStatusCodeError(500, "fuck you"));
+      return next(createStatusCodeError(500, 'user is dead'));
     }
 
     /* {{ can delete user from any organization }} */

@@ -16,7 +16,7 @@ exports.up = function(knex, Promise) {
         .unsigned()
         .references('id')
         .inTable('organization')
-        .onDelete('SET NULL');
+        .onDelete('CASCADE');
     })
 
     .createTable('user_sass', table => {
@@ -31,7 +31,7 @@ exports.up = function(knex, Promise) {
         .nullable()
         .references('id')
         .inTable('organization')
-        .onDelete('SET NULL')
+        .onDelete('CASCADE')
       table
         .integer('role_id')
         .unsigned()

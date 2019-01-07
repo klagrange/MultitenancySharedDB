@@ -15,7 +15,8 @@ const {
   permissionIsAssignedToRole,
   roleIsFromOrg,
   orgExistsByName,
-  deleteRolePermission
+  deleteRolePermission,
+  deleteOrg
 } = require('./atomicQueries');
 
 
@@ -84,6 +85,10 @@ require('./startup/db');
 //   .then(console.log)
 //   .catch(console.log)
 
-deleteRolePermission(16, 6)
+// deleteRolePermission(16, 6)
+//   .then(console.log)
+//   .catch(console.log)
+
+deleteOrg(5)
   .then(console.log)
   .catch(console.log)

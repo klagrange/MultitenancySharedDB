@@ -5,7 +5,6 @@ class Organization extends Model {
     return 'organization';
   }
 
-
   static get jsonSchema() {
     return {
       type: 'object',

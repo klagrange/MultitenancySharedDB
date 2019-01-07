@@ -66,8 +66,6 @@ async function orgExists(orgId) {
 
 async function orgExistsByName(name) {
   const org = await Organization.query().where('name', name)
-
-  console.log(org)
   return org.length > 0;
 }
 
@@ -84,12 +82,16 @@ async function userExists(userId) {
 async function deleteRolePermission(roleId, permissionId) {
   const rolePerm = await RolePermission.query().delete().where('role_id', roleId).where('permission_id', permissionId)
   return rolePerm;
-
 }
 
 async function deleteUser(userId) {
   const deletedUser = await UserSass.query().delete().where('id', userId);
   return deletedUser;
+}
+
+async function deleteOrg(orgId) {
+  const deletedOrg = await Organization.query().delete().where('id', orgId);
+  return deletedOrg;
 }
 
 async function findUserAll() {
@@ -155,5 +157,6 @@ module.exports = {
   findOrgs,
   addOrg,
   orgExistsByName,
-  deleteRolePermission
+  deleteRolePermission,
+  deleteOrg
 }

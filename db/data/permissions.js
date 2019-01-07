@@ -97,7 +97,7 @@ module.exports = [
     {
         "id": 20,
         "code": "XQXY1977826757764",
-        "description": "Position visit stay.\nRead form whatever tough discussion light protect. Reach level lot unit."
+        "description": "Can remove an organization."
     },
     {
         "id": 21,
