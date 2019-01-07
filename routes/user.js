@@ -1,4 +1,5 @@
 const express = require('express');
+const { ValidationError } = require('objection');
 const router = express.Router();
 const allowOnlyPermissions = require('../middlewares/allowOnlyPermissions.js');
 const {
@@ -51,18 +52,17 @@ const {
  */
 (function() {
   const permissions = ['PFRY4798513053955', 'CEIG1009075525306']
-  router.post('/create', allowOnlyPermissions(permissions), async (req, res, next) => {
-
+  router.post('/', allowOnlyPermissions(permissions), async (req, res, next) => {
     const {
       requesterPermissions,
       requesterOrganizationId,
     } = res.locals
 
     /* {{ common validations }} */
-    await validateUserPayload(req.body)
-      .catch((e) => {
-        next(createStatusCodeError(400))
-      })
+    try{
+      await validateUserPayload(req.body)
+      .catch(e => { throw(e) })
+    } catch(e) { return next(e) }
 
     /* {{ can add a user }} */
     if(requesterPermissions.includes(permissions[0])) {
@@ -97,8 +97,9 @@ const {
 
     /* {{ common validations }} */
     userInDb = await findUserById(userIdToDelete);
-    if (userInDb.length === 0)
+    if (userInDb.length === 0) {
       return next(createStatusCodeError(500, "fuck you"));
+    }
 
     /* {{ can delete user from any organization }} */
     if(requesterPermissions.includes(permissions[0])) {

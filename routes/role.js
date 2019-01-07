@@ -63,9 +63,7 @@ const {
     try{
       await validateRolePayload(req.body)
       .catch(e => { throw(e) })
-    } catch(e) {
-      return next(createStatusCodeError(400, 'invalid payload'))
-    }
+    } catch(e) { return next(e) }
 
     /* {{ can add a role in any organization }} */
     if(requesterPermissions.includes(permissions[0])) {

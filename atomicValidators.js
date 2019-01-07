@@ -8,14 +8,17 @@ const {
   roleExists
 } = require('./atomicQueries.js')
 
+const {
+  createStatusCodeError
+} = require('./utils');
+
 async function validateRoleAndPermissionExistence(roleId, permissionId) {
   try {
-
     const p = await permissionExists(permissionId);
     const r = await roleExists(roleId);
 
     if(!p || !r) {
-      throw Error
+      throw (createStatusCodeError(400, 'role and/or permission does not exist'));
     }
   } catch(e) {
     throw (e);
@@ -27,16 +30,12 @@ async function validateUserPayload(userPayload) {
     const user = await UserSass.fromJson(userPayload)
 
     if (!await roleIsPartOfOrg(user.role_id, user.organization_id)) {
-      throw (Error);
+      throw (createStatusCodeError(400, 'role not part of org'));
     }
 
     return user;
   } catch (e) {
-    if (e instanceof ValidationError) {
-      throw (ValidationError);
-    } else {
-      throw (e);
-    }
+    throw (e);
   }
 }
 

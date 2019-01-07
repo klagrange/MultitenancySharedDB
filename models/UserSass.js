@@ -12,10 +12,12 @@ class UserSass extends Model {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['name', 'organization_id', 'role_id'],
+      required: ['name', 'login', 'password', 'organization_id', 'role_id'],
 
       properties: {
         name: { type: 'string', minLength: 1, maxLength: 255 },
+        name: { type: 'string', minLength: 1, maxLength: 255 },
+        password: { type: 'string', minLength: 1, maxLength: 255 },
         organization_id: { type: 'number' },
         role_id: { type: 'number' },
       },

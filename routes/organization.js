@@ -56,9 +56,8 @@ const {
     try{
       await validateOrgPayload(req.body)
       .catch(e => { throw(e) })
-    } catch(e) {
-      return next(createStatusCodeError(400, 'invalid payload'))
-    }
+    } catch(e) { return next(e) }
+    
     const exists = await orgExistsByName(req.body.name)
     if(exists) return next(createStatusCodeError(409)) 
 
