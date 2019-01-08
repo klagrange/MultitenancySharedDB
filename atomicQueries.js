@@ -5,7 +5,7 @@ const RolePermission = require('./models/RolePermission');
 const Permission = require('./models/Permission');
 const Organization = require('./models/Organization');
 const {
-  createStatusCodeError
+  createStatusCodeError,
 } = require('./utils');
 
 async function roleExists(roleId) {
@@ -33,17 +33,14 @@ async function findOrgs() {
   return orgs;
 }
 
-async function findRoles(eager=undefined, orgId=undefined, roleId=undefined) {
-  console.log(roleId)
-
+async function findRoles(eager = undefined, orgId = undefined, roleId = undefined) {
   const roles = await Role
     .query()
     .skipUndefined()
     .allowEager('permissions')
     .eager(eager)
     .where('id', roleId)
-    .where('organization_id', orgId)
-
+    .where('organization_id', orgId);
   return roles;
 }
 
@@ -68,7 +65,7 @@ async function orgExists(orgId) {
 }
 
 async function orgExistsByName(name) {
-  const org = await Organization.query().where('name', name)
+  const org = await Organization.query().where('name', name);
   return org.length > 0;
 }
 
@@ -83,7 +80,7 @@ async function userExists(userId) {
 }
 
 async function deleteRolePermission(roleId, permissionId) {
-  const rolePerm = await RolePermission.query().delete().where('role_id', roleId).where('permission_id', permissionId)
+  const rolePerm = await RolePermission.query().delete().where('role_id', roleId).where('permission_id', permissionId);
   return rolePerm;
 }
 
@@ -107,6 +104,28 @@ async function findUserAll() {
   return users;
 }
 
+async function findUsers(eagerOrg=undefined, eagerRole=undefined, orgId=undefined) {
+  const users = UserSass
+    .query()
+    .skipUndefined()
+    .allowEager('[organization, role]')
+    .where('organization_id', orgId);
+
+  if (eagerOrg && eagerRole) {
+    return users.eager('[role, organization]');
+  }
+
+  if (eagerOrg && !eagerRole) {
+    return users.eager('organization');
+  }
+
+  if (eagerRole && !eagerOrg) {
+    return users.eager('role');
+  }
+
+  return users;
+}
+
 async function findUserById(userId) {
   const user = await UserSass.query().where('id', userId);
   return user;
@@ -125,11 +144,6 @@ async function insertUser(user) {
 async function findPermissionById(permissionId) {
   const permission = await Permission.query().where('id', permissionId).first();
   return permission || null;
-}
-
-async function findRole(roleId) {
-  const role = await Role.query().where('id', roleId).first();
-  return role || null;
 }
 
 async function addPermissionToRole(roleId, permissionId) {
@@ -166,5 +180,6 @@ module.exports = {
   orgExistsByName,
   deleteRolePermission,
   deleteOrg,
-  deleteRole
+  deleteRole,
+  findUsers
 }

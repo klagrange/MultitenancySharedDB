@@ -8,6 +8,7 @@ const {
   insertUser,
   deleteUser,
   findUserById,
+  findUsers
 } = require('../atomicQueries');
 const {
   validateUserPayload,
@@ -32,13 +33,13 @@ const {
 
     /* {{ can view all users }} */
     if(requesterPermissions.includes(permissions[0])) {
-      const users = await findUserAll();
+      const users = await findUsers(eagerOrg=req.query.eagerOrg, eagerRole=req.query.eagerOrg, orgId=req.query.orgId);
       return res.send(users);
     }
 
     /* {{ can view aller users from same organization only }} */
     if(requesterPermissions.includes(permissions[1])) {
-      const users = await findUserFromOrg(requesterOrganizationId);
+      const users = await findUsers(eagerOrg=req.query.eagerOrg, eagerRole=req.query.eagerOrg, orgId=requesterOrganizationId);
       return res.send(users);
     }
   });
