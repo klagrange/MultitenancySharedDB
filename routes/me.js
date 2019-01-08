@@ -1,12 +1,9 @@
 const express = require('express');
+
 const router = express.Router();
-const allowOnlyPermissions = require('../middlewares/allowOnlyPermissions.js');
 const UserSass = require('../models/UserSass');
 const {
-  findUserById
-} = require('../atomicQueries');
-const {
-  createStatusCodeError
+  createStatusCodeError,
 } = require('../utils');
 
 router.get('/', async (req, res, next) => {
@@ -17,11 +14,11 @@ router.get('/', async (req, res, next) => {
     .eager('[role.permissions, organization]')
     .first()
 
-    .then((user) => res.send(user))
+    .then(user => res.send(user))
     .catch((e) => {
-      next(createStatusCodeError(500))
-    })
-})
+      next(createStatusCodeError(500));
+    });
+});
 
 
 module.exports = router;

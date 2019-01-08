@@ -1,4 +1,3 @@
-const { transaction } = require('objection');
 const UserSass = require('./models/UserSass');
 const Role = require('./models/Role');
 const RolePermission = require('./models/RolePermission');
@@ -104,12 +103,14 @@ async function findUserAll() {
   return users;
 }
 
-async function findUsers(eagerOrg=undefined, eagerRole=undefined, orgId=undefined) {
+async function findUsers(eagerOrg = undefined, eagerRole = undefined,
+  orgId = undefined, login = undefined) {
   const users = UserSass
     .query()
     .skipUndefined()
     .allowEager('[organization, role]')
-    .where('organization_id', orgId);
+    .where('organization_id', orgId)
+    .where('login', login);
 
   if (eagerOrg && eagerRole) {
     return users.eager('[role, organization]');
