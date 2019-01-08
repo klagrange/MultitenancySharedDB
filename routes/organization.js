@@ -39,7 +39,7 @@ const {
  * QERS6914775236148: can add a organization.
  */
 (function routeAddOrganization() {
-  const permissions = ['QERS6914775236148']
+  const permissions = ['QERS6914775236148'];
   router.post('/', allowOnlyPermissions(permissions), async (req, res, next) => {
     const {
       requesterPermissions,

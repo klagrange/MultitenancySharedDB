@@ -58,11 +58,6 @@ async function addRole(role) {
   return insertedRole;
 }
 
-async function orgExists(orgId) {
-  const org = await Organization.query().where('id', orgId);
-  return org.length > 0;
-}
-
 async function orgExistsByName(name) {
   const org = await Organization.query().where('name', name);
   return org.length > 0;
@@ -101,6 +96,46 @@ async function deleteRole(roleId) {
 async function findUserAll() {
   const users = await UserSass.query();
   return users;
+}
+
+async function findPermissions(permId = undefined, eagerRole = undefined) {
+  const permissions = Permission
+    .query()
+    .skipUndefined()
+    .allowEager('roles')
+    .where('id', permId);
+
+  if (eagerRole) {
+    return permissions.eager('roles');
+  }
+
+  return permissions;
+}
+
+async function findPermissionsFromOrg(orgId, permId = undefined, eagerRole = undefined) {
+  const permissions = await Permission
+    .query()
+    .eager('roles');
+
+  const pInOrg = permissions.filter((el) => {
+    const f = el.roles.filter((role) => {
+      return role.organization_id === orgId;
+    });
+    return f.length > 0;
+  });
+
+  const p = Permission
+    .query()
+    .skipUndefined()
+    .allowEager('roles')
+    .whereIn('id', pInOrg.map(p => p.id))
+    .where('id', permId);
+
+  if (eagerRole) {
+    return p.eager('roles');
+  }
+
+  return p;
 }
 
 async function findUsers(eagerOrg = undefined, eagerRole = undefined,
@@ -148,11 +183,13 @@ async function findPermissionById(permissionId) {
 }
 
 async function addPermissionToRole(roleId, permissionId) {
-  const role = await findRoleById(roleId);
-  if(!role) throw createStatusCodeError(500, 'role does not exist');
+  const roles = await findRoles(eager = undefined, orgId = undefined, roleId = roleId); 
+  const role = roles[0];
+
+  if (!role) throw createStatusCodeError(500, 'role does not exist');
 
   const permission = await findPermissionById(permissionId);
-  if(!permission) throw createStatusCodeError(500, 'permission does not exist');
+  if (!permission) throw createStatusCodeError(500, 'permission does not exist');
 
   const inserted = await role.$relatedQuery('permissions').relate(permissionId);
 
@@ -182,5 +219,7 @@ module.exports = {
   deleteRolePermission,
   deleteOrg,
   deleteRole,
-  findUsers
-}
+  findUsers,
+  findPermissions,
+  findPermissionsFromOrg,
+};

@@ -18,7 +18,9 @@ const {
   deleteRolePermission,
   deleteOrg,
   deleteRole,
-  findUsers
+  findUsers,
+  findPermissions,
+  findPermissionsFromOrg
 } = require('./atomicQueries');
 
 
@@ -103,7 +105,14 @@ require('./startup/db');
 //   .then(console.log)
 //   .catch(console.log)
 
-findUsers(eagerOrg=true, eagerRole=true, orgId=2)
+// findUsers(eagerOrg=true, eagerRole=true, orgId=2)
+//   .then(console.log)
+//   .catch(console.log)
+
+// findPermissions(permId = 1, eagerRole = true)
+//   .then(console.log)
+//   .catch(console.log)
+
+findPermissionsFromOrg(8)
   .then(console.log)
   .catch(console.log)
-

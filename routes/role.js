@@ -1,5 +1,6 @@
 const express = require('express');
 const Joi = require('joi');
+
 const router = express.Router();
 const allowOnlyPermissions = require('../middlewares/allowOnlyPermissions.js');
 const {
@@ -28,7 +29,7 @@ const {
  */
 (function routeViewRoles() {
   const permissions = ['QJTE9212783101092', 'CEGK7839937191571'];
-  router.get('/', allowOnlyPermissions(permissions), async (req, res, next) => {
+  router.get('/', allowOnlyPermissions(permissions), async (req, res) => {
     const {
       requesterPermissions,
       requesterOrganizationId,
@@ -37,7 +38,7 @@ const {
     /* {{ can view roles }} */
     if (requesterPermissions.includes(permissions[0])) {
       // const roles = await findRoles();
-      const roles = await findRoles(eager=req.query.eager, orgId=req.query.orgId);
+      const roles = await findRoles(eager = req.query.eager, orgId = req.query.orgId);
       return res.send(roles);
     }
 
@@ -96,7 +97,7 @@ const {
  * BMMV8632489659857: can delete a role from own organization only.
  */
 (function routeRemoveRole() {
-  const permissions = ['TAVT8651666899880', 'BMMV8632489659857']
+  const permissions = ['TAVT8651666899880', 'BMMV8632489659857'];
   router.delete('/:id', allowOnlyPermissions(permissions), async (req, res, next) => {
     const roleToDelete = req.params.id;
     const {
@@ -115,7 +116,7 @@ const {
 
     /* {{ can add a role in own organization only }} */
     if (requesterPermissions.includes(permissions[1])) {
-      const roleInDb = await findRoles(eager=undefined, orgId=undefined, roleId=roleToDelete);
+      const roleInDb = await findRoles(eager = undefined, orgId = undefined, roleId = roleToDelete);
       if (roleInDb.length === 0) return res.send('role does not exist');
 
       if (roleInDb[0]['organization_id'] !== requesterOrganizationId) {
@@ -223,8 +224,8 @@ const {
     const roleId = req.params.id;
 
     /* {{ common validations }} */
-    const validated = await commonValidations(roleId, req.body)
-    if (validated instanceof Error) return next(validated)
+    const validated = await commonValidations(roleId, req.body);
+    if (validated instanceof Error) return next(validated);
 
     /* {{ can add permission to existing role }} */
     const { permissionId } = req.body;

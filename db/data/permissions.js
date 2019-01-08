@@ -102,12 +102,12 @@ module.exports = [
     {
         "id": 21,
         "code": "JNLW0698833451904",
-        "description": "xxx"
+        "description": "can view permissions."
     },
     {
         "id": 22,
         "code": "USUL3556272119368",
-        "description": "xxx"
+        "description": "can view permissions only from same org."
     },
     {
         "id": 23,
