@@ -5,7 +5,6 @@ const allowOnlyPermissions = require('../middlewares/allowOnlyPermissions.js');
 const {
   insertUser,
   deleteUser,
-  findUserById,
   findUsers,
 } = require('../atomicQueries');
 const {
@@ -31,13 +30,13 @@ const {
 
     /* {{ can view all users }} */
     if (requesterPermissions.includes(permissions[0])) {
-      const users = await findUsers(eagerOrg = req.query.eagerOrg, eagerRole = req.query.eagerOrg, orgId = req.query.orgId, login = req.query.login);
+      const users = await findUsers(eagerOrg = req.query.eagerOrg, eagerRole = req.query.eagerOrg, userId = req.query.userId, orgId = req.query.orgId, login = req.query.login);
       return res.send(users);
     }
 
     /* {{ can view aller users from same organization only }} */
     if (requesterPermissions.includes(permissions[1])) {
-      const users = await findUsers(eagerOrg = req.query.eagerOrg, eagerRole = req.query.eagerOrg, orgId = requesterOrganizationId, login = req.query.login);
+      const users = await findUsers(eagerOrg = req.query.eagerOrg, eagerRole = req.query.eagerOrg, userId = req.query.userId, orgId = requesterOrganizationId, login = req.query.login);
       return res.send(users);
     }
 
@@ -108,7 +107,8 @@ const {
     } = res.locals;
 
     /* {{ common validations }} */
-    const userInDb = await findUserById(userIdToDelete);
+    const userInDb = await findUsers(eagerOrg = undefined, eagerRole = undefined,
+      userId = userIdToDelete, orgId = undefined, login = undefined);
     if (userInDb.length === 0) {
       return next(createStatusCodeError(500, 'user is dead'));
     }

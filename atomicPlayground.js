@@ -5,7 +5,6 @@ const {
   insertUser,
   deleteUser,
   userExists,
-  findUserById,
   findRoles,
   addRole,
   findRolesFromOrg,
@@ -23,7 +22,6 @@ const {
   findPermissionsFromOrg
 } = require('./atomicQueries');
 
-
 const {
   validateRolePayload,
   validateRoleAndPermissionExistence
@@ -31,10 +29,6 @@ const {
 
 // wire knex to objection
 require('./startup/db');
-
-// findUserById(1)
-//   .then(console.log)
-//   .catch(console.log)
 
 // findRoles()
 //   .then(console.log)
@@ -105,14 +99,14 @@ require('./startup/db');
 //   .then(console.log)
 //   .catch(console.log)
 
-// findUsers(eagerOrg=true, eagerRole=true, orgId=2)
-//   .then(console.log)
-//   .catch(console.log)
+findUsers(eagerOrg=undefined, eagerRole=undefined, orgId=undefined)
+  .then(console.log)
+  .catch(console.log)
 
 // findPermissions(permId = 1, eagerRole = true)
 //   .then(console.log)
 //   .catch(console.log)
 
-findPermissionsFromOrg(8)
-  .then(console.log)
-  .catch(console.log)
+// findPermissionsFromOrg(8)
+//   .then(console.log)
+//   .catch(console.log)

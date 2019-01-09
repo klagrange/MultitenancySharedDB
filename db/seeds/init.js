@@ -1,9 +1,9 @@
-const organizations = require('../data/organizations.js')
-const users = require('../data/users.js')
-const goals = require('../data/goals.js')
-const roles = require('../data/roles.js')
-const permissions = require('../data/permissions.js')
-const role_permission_s = require('../data/role_permission.js')
+const organizations = require('../data/organizations.js');
+const users = require('../data/users.js');
+const goals = require('../data/goals.js');
+const roles = require('../data/roles.js');
+const permissions = require('../data/permissions.js');
+const rolePermission = require('../data/role_permission.js');
 
 exports.seed = function(knex, Promise) {
   return knex('organization').del()
@@ -58,7 +58,7 @@ exports.seed = function(knex, Promise) {
       return knex('role_permission').del()
     })
     .then(function () {
-      return knex('role_permission').insert(role_permission_s);
+      return knex('role_permission').insert(rolePermission);
     })
     .then(function () {
       return knex.raw('select setval(\'role_permission_id_seq\', max(id)) from role_permission');

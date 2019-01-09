@@ -16,7 +16,7 @@ class UserSass extends Model {
 
       properties: {
         name: { type: 'string', minLength: 1, maxLength: 255 },
-        name: { type: 'string', minLength: 1, maxLength: 255 },
+        login: { type: 'string', minLength: 1, maxLength: 255 },
         password: { type: 'string', minLength: 1, maxLength: 255 },
         organization_id: { type: 'number' },
         role_id: { type: 'number' },

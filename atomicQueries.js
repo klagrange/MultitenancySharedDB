@@ -113,6 +113,9 @@ async function findPermissions(permId = undefined, eagerRole = undefined) {
 }
 
 async function findPermissionsFromOrg(orgId, permId = undefined, eagerRole = undefined) {
+  /*
+   * [TODO]: perhaps a direct join query would be more efficient?
+   */
   const permissions = await Permission
     .query()
     .eager('roles');
@@ -139,16 +142,17 @@ async function findPermissionsFromOrg(orgId, permId = undefined, eagerRole = und
 }
 
 async function findUsers(eagerOrg = undefined, eagerRole = undefined,
-  orgId = undefined, login = undefined) {
+  userId = undefined, orgId = undefined, login = undefined) {
   const users = UserSass
     .query()
     .skipUndefined()
-    .allowEager('[organization, role]')
+    .allowEager('[organization, role.permissions]')
     .where('organization_id', orgId)
-    .where('login', login);
+    .where('login', login)
+    .where('id', userId);
 
   if (eagerOrg && eagerRole) {
-    return users.eager('[role, organization]');
+    return users.eager('[role.permissions, organization]');
   }
 
   if (eagerOrg && !eagerRole) {
@@ -156,15 +160,10 @@ async function findUsers(eagerOrg = undefined, eagerRole = undefined,
   }
 
   if (eagerRole && !eagerOrg) {
-    return users.eager('role');
+    return users.eager('role.permissions');
   }
 
   return users;
-}
-
-async function findUserById(userId) {
-  const user = await UserSass.query().where('id', userId);
-  return user;
 }
 
 async function findUserFromOrg(orgId) {
@@ -183,9 +182,8 @@ async function findPermissionById(permissionId) {
 }
 
 async function addPermissionToRole(roleId, permissionId) {
-  const roles = await findRoles(eager = undefined, orgId = undefined, roleId = roleId); 
+  const roles = await findRoles(eager = undefined, orgId = undefined, roleId = roleId);
   const role = roles[0];
-
   if (!role) throw createStatusCodeError(500, 'role does not exist');
 
   const permission = await findPermissionById(permissionId);
@@ -203,7 +201,6 @@ module.exports = {
   insertUser,
   deleteUser,
   userExists,
-  findUserById,
   findRoles,
   addRole,
   findRolesFromOrg,

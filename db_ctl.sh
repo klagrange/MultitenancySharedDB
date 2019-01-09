@@ -19,6 +19,10 @@ function init() {
   POSTGRES_CONTAINER_NAME="${POSTGRES_EXPOSED_PORT}_${POSTGRES_DB}"
 }
 
+function container_has_been_cached() {
+  [ ! -z `docker ps -aq -f name=${1}` ]
+}
+
 function container_is_running() {
    [ ! -z `docker ps -q -f name=${1}` ]
 }
@@ -28,6 +32,8 @@ function container_has_been_cached() {
 }
 
 function start() {
+    container_has_been_cached ${POSTGRES_CONTAINER_NAME} && docker container rm ${POSTGRES_CONTAINER_NAME}
+
     container_is_running ${POSTGRES_CONTAINER_NAME} \
     || docker run -d -p "${POSTGRES_EXPOSED_PORT}":5432 --name "${POSTGRES_CONTAINER_NAME}" -e POSTGRES_DB="${POSTGRES_DB}" -e POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" -d "${POSTGRES_IMAGE}" \
     && sleep 2 \

@@ -1,4 +1,5 @@
 const { isEmpty } = require('lodash');
+
 const UserSass = require('../models/UserSass');
 const { createStatusCodeError } = require('../utils');
 
@@ -27,9 +28,9 @@ async function auth(req, res, next) {
   res.locals.requesterOrganizationId = requesterOrganizationId;
   res.locals.requesterUserId = userEager.id;
 
-  console.log("============================================================")
-  console.log(permissions)
-  console.log("============================================================")
+  // console.log("============================================================");
+  // console.log(permissions);
+  // console.log("============================================================");
 
   return next();
 }

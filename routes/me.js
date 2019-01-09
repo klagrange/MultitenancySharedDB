@@ -1,23 +1,16 @@
 const express = require('express');
 
 const router = express.Router();
-const UserSass = require('../models/UserSass');
 const {
-  createStatusCodeError,
-} = require('../utils');
+  findUsers,
+} = require('../atomicQueries');
 
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res) => {
   const { requesterUserId } = res.locals;
 
-  await UserSass.query()
-    .where('id', requesterUserId)
-    .eager('[role.permissions, organization]')
-    .first()
+  const users = await findUsers(req.query.eagerOrg, req.query.eagerOrg, userId = requesterUserId, orgId = undefined, login = undefined);
 
-    .then(user => res.send(user))
-    .catch((e) => {
-      next(createStatusCodeError(500));
-    });
+  res.send(users[0]);
 });
 
 
