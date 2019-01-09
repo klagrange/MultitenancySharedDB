@@ -1,15 +1,15 @@
-const { Model, ValidationError } = require('objection');
+const { ValidationError } = require('objection');
 const UserSass = require('./models/UserSass');
 const Role = require('./models/Role');
 const Organization = require('./models/Organization');
 const {
   roleIsPartOfOrg,
   permissionExists,
-  roleExists
-} = require('./atomicQueries.js')
+  roleExists,
+} = require('./atomicQueries.js');
 
 const {
-  createStatusCodeError
+  createStatusCodeError,
 } = require('./utils');
 
 async function validateRoleAndPermissionExistence(roleId, permissionId) {
@@ -17,17 +17,17 @@ async function validateRoleAndPermissionExistence(roleId, permissionId) {
     const p = await permissionExists(permissionId);
     const r = await roleExists(roleId);
 
-    if(!p || !r) {
+    if (!p || !r) {
       throw (createStatusCodeError(400, 'role and/or permission does not exist'));
     }
-  } catch(e) {
+  } catch (e) {
     throw (e);
   }
 }
 
 async function validateUserPayload(userPayload) {
   try {
-    const user = await UserSass.fromJson(userPayload)
+    const user = await UserSass.fromJson(userPayload);
 
     if (!await roleIsPartOfOrg(user.role_id, user.organization_id)) {
       throw (createStatusCodeError(400, 'role not part of org'));
@@ -41,7 +41,7 @@ async function validateUserPayload(userPayload) {
 
 async function validateRolePayload(rolePayload) {
   try {
-    const role = await Role.fromJson(rolePayload)
+    const role = await Role.fromJson(rolePayload);
 
     return role;
   } catch (e) {
@@ -82,5 +82,5 @@ module.exports = {
   validateUserPayload,
   validateRolePayload,
   validateRoleAndPermissionExistence,
-  validateOrgPayload
-}
+  validateOrgPayload,
+};

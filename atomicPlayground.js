@@ -1,13 +1,10 @@
 const {
-  findUserAll,
-  findUserFromOrg,
   roleIsPartOfOrg,
   insertUser,
   deleteUser,
   userExists,
   findRoles,
   addRole,
-  findRolesFromOrg,
   findRoleById,
   addPermissionToRole,
   findPermissionById,
@@ -41,10 +38,6 @@ require('./startup/db');
 // }
 
 // addRole(role)
-//   .then(console.log)
-//   .catch(console.log)
-
-// findRolesFromOrg(1)
 //   .then(console.log)
 //   .catch(console.log)
 

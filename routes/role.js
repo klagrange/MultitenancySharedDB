@@ -5,7 +5,6 @@ const router = express.Router();
 const allowOnlyPermissions = require('../middlewares/allowOnlyPermissions.js');
 const {
   findRoles,
-  findRolesFromOrg,
   addRole,
   permissionExists,
   roleExists,
@@ -37,14 +36,13 @@ const {
 
     /* {{ can view roles }} */
     if (requesterPermissions.includes(permissions[0])) {
-      // const roles = await findRoles();
-      const roles = await findRoles(eager = req.query.eager, orgId = req.query.orgId);
+      const roles = await findRoles(eager = req.query.eager, orgId = req.query.orgId, roleId = req.query.roleId);
       return res.send(roles);
     }
 
     /* {{ can view roles from own organization only }} */
     if (requesterPermissions.includes(permissions[1])) {
-      const roles = await findRolesFromOrg(requesterOrganizationId);
+      const roles = await findRoles(eager = req.query.eager, orgId = requesterOrganizationId, roleId = req.query.roleId);
       return res.send(roles);
     }
 

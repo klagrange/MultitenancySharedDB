@@ -43,11 +43,6 @@ async function findRoles(eager = undefined, orgId = undefined, roleId = undefine
   return roles;
 }
 
-async function findRolesFromOrg(orgId) {
-  const roles = await Role.query().where('organization_id', orgId);
-  return roles;
-}
-
 async function addOrg(org) {
   const insertedOrg = await Organization.query().insertGraph(org);
   return insertedOrg;
@@ -91,11 +86,6 @@ async function deleteOrg(orgId) {
 async function deleteRole(roleId) {
   const deletedRole = await Role.query().delete().where('id', roleId);
   return deletedRole;
-}
-
-async function findUserAll() {
-  const users = await UserSass.query();
-  return users;
 }
 
 async function findPermissions(permId = undefined, eagerRole = undefined) {
@@ -166,11 +156,6 @@ async function findUsers(eagerOrg = undefined, eagerRole = undefined,
   return users;
 }
 
-async function findUserFromOrg(orgId) {
-  const users = await UserSass.query().where('organization_id', orgId);
-  return users;
-}
-
 async function insertUser(user) {
   const insertedUser = await UserSass.query().insertGraph(user);
   return insertedUser;
@@ -195,15 +180,12 @@ async function addPermissionToRole(roleId, permissionId) {
 }
 
 module.exports = {
-  findUserAll,
-  findUserFromOrg,
   roleIsPartOfOrg,
   insertUser,
   deleteUser,
   userExists,
   findRoles,
   addRole,
-  findRolesFromOrg,
   addPermissionToRole,
   findPermissionById,
   permissionExists,
