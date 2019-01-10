@@ -1,0 +1,68 @@
+# Entities are declared in '[' ... ']'. All attributes after the entity header
+# up until the end of the file (or the next entity declaration) correspond
+# to this entity.
+[USER_SASS] {bgcolor: "#ececfc", size: "20"}
+*id
+name
+token
++organization_id
++role_id
+
+[GOAL] {bgcolor: "#ececfc", size: "20"}
+*id
+name
+description
++user_id
+
+[ORGANIZATION] {bgcolor: "#ececfc", size: "20"}
+*id
+name
+description
+
+[ROLE]
+*id
+name
+description
++user_id
+
+[PERMISSION] {bgcolor: "#ececfc", size: "20"}
+*id
+code
+description
+
+[ROLE_PERMISSION]
+*id
++role_id
++permission_id
+
+# Each relationship must be between exactly two entities, which need not
+# be distinct. Each entity in the relationship has exactly one of four
+# possible cardinalities:
+#
+# Cardinality    Syntax
+# 0 or 1         ?
+# exactly 1      1
+# 0 or more      *
+# 1 or more      +
+
+# A user belongs to an organization.
+# An organization has one or more users.
+USER_SASS *--1 ORGANIZATION
+
+# A user can have one or more goals.
+# A goal is unique per user.
+USER_SASS 1--* GOAL
+
+# A user has a role.
+# A role can be shared between zero, one or more users.
+USER_SASS 1--* ROLE
+
+# An organization contains one or more roles.
+# A role is unique per organization.
+ORGANIZATION 1--+ ROLE
+
+# A role can be described as a collection of one or more permissions.
+# A permission can be shared between different roles.
+ROLE ?--* ROLE_PERMISSION
+PERMISSION ?--* ROLE_PERMISSION
+
