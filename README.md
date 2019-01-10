@@ -7,6 +7,18 @@ $ # start app
 $ node server.js
 ```
 
+# Test application
+```sh
+$ yarn test:full
+```
+or alternatively,
+```sh
+$ ./db_ctl.sh test:start
+$ yarn test
+$ ./db_ctl.sh test:stop
+```
+
+
 # Application flow
  * A user sends a request.
  * A request always contains at bare minimum a token.
